@@ -17,10 +17,15 @@ class Configuration implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('maxmind_geoip');
+        if (\method_exists(TreeBuilder::class, 'getRootNode')) {
+            $treeBuilder = new TreeBuilder('maxmind_geoip');
+            $rootNode = $treeBuilder->getRootNode();
+        } else {
+            $treeBuilder = new TreeBuilder();
+            $rootNode = $treeBuilder->root('maxmind_geoip');
+        }
 
-        $path = realpath(__DIR__.'/../../../../../data/GeoLiteCity.dat');
+        $path = \realpath(__DIR__.'/../../../../../data/GeoLiteCity.dat');
 
         $info = 'The file path to the .dat file (e.g. the GeoLiteCity.dat) to be used for ip-geo-locating.';
 

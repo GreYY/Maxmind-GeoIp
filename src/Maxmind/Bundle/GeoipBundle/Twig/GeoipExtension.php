@@ -7,12 +7,16 @@
 namespace Maxmind\Bundle\GeoipBundle\Twig;
 
 use Maxmind\Bundle\GeoipBundle\Service\GeoipManager;
-use Twig_Environment;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+use Twig\TwigFunction;
+use Twig\Error\RuntimeError;
+use Twig\Environment;
 
 /**
  * Class GeoipExtension.
  */
-class GeoipExtension extends \Twig_Extension
+class GeoipExtension extends AbstractExtension
 {
     /**
      * @var GeoipManager
@@ -34,23 +38,23 @@ class GeoipExtension extends \Twig_Extension
      */
     public function getFilters()
     {
-        return array(
-            new \Twig_SimpleFilter('geoip', array($this, 'geoipFilter')),
-        );
+        return [
+            new TwigFilter('geoip', [$this, 'geoipFilter']),
+        ];
     }
 
     public function getFunctions()
     {
-        return array(
-            new \Twig_SimpleFunction(
+        return [
+            new TwigFunction(
                 'code',
-                array($this, 'getCode'),
-                array(
-                    'is_safe' => array('html'),
+                [$this, 'getCode'],
+                [
+                    'is_safe' => ['html'],
                     'needs_environment' => true,
-                )
+                ]
             ),
-        );
+        ];
     }
 
     /**
@@ -64,14 +68,14 @@ class GeoipExtension extends \Twig_Extension
     }
 
     /**
-     * @param Twig_Environment $env
-     * @param $template
+     * @param Environment $env
+     * @param mixed $template
      *
      * @return bool|mixed
      *
-     * @throws \Twig_Error_Runtime
+     * @throws RuntimeError
      */
-    public function getCode(Twig_Environment $env, $template)
+    public function getCode(Environment $env, $template)
     {
         if ($env->hasExtension('demo')) {
             $functions = $env->getExtension('demo')->getFunctions();

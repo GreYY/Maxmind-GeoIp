@@ -56,7 +56,7 @@ EOT
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $source = $input->getArgument('source');
         if ($this->dataFilePath) {
@@ -87,5 +87,7 @@ EOT
         if ($verbose) {
             $output->writeln('<info>Unzip completed</info>');
         }
+
+        return 0;
     }
 }
